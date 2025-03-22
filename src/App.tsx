@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import PlayerButton from "./components/PlayerButton/PlayerButton";
 import Field from "./components/Field/Field";
 import Counter from "./components/Counter/Counter";
-import OptionsPopup from "./components/OptionsPopup/OptionsPopup";
+import Modal from "./components/Modal/Modal";
+import Options from "./components/Options/Options";
 import { AppState } from "./store/store";
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
   return (
     <>
       <div
-        className={`${style.grey} ${style.center} ${style.borderOutset} ${style.container} ${style.fitContent}`}>
+        className={`${style.grey} ${style.center} ${style.borderOutset} ${style.container} ${style.fitContent}`}
+      >
         <div className={`${style.w100} ${style.row}`}>
           <Counter count={flagCount}></Counter>
           <PlayerButton gameStatus={status}></PlayerButton>
@@ -26,7 +28,9 @@ function App() {
           <Field minefield={grid}></Field>
         </div>
       </div>
-      {settingsDispayed && <OptionsPopup />}
+      <Modal open={settingsDispayed}>
+        <Options></Options>
+      </Modal>
     </>
   );
 }

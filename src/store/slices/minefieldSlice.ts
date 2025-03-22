@@ -9,12 +9,15 @@ export type MinefieldState = {
   grid: MinefieldTile[][];
 };
 
+const initialWidth = 10;
+const initialHeight = 10;
+
 const initialState: MinefieldState = {
-  width: 10,
-  height: 10,
+  width: initialWidth,
+  height: initialHeight,
   mineCount: 0,
   flagCount: 0,
-  grid: Minefield.createGrid(10, 10, 0),
+  grid: Minefield.createGrid(initialWidth, initialHeight, 0),
 };
 
 const minefieldSlice = createSlice({

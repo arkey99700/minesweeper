@@ -1,22 +1,26 @@
 import style from "../../assets/css/app.module.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { GameStatusName, refreshGame } from "../../store/slices/gameSlice";
+import {
+  GameStatus,
+  GameStatuses,
+  refreshGame,
+} from "../../store/slices/gameSlice";
 import { AppDispatch } from "../../store/store";
 import { restartTimer } from "../../store/thunks/timerThunks";
 import { createField } from "../../store/slices/minefieldSlice";
 
 type Props = {
-  gameStatus: GameStatusName;
+  gameStatus: GameStatus;
 };
 
-const GameStateEmojiMap: Record<GameStatusName, string> = {
-  [GameStatusName.InProgress]: "🙂",
-  [GameStatusName.Paused]: "🙂",
-  [GameStatusName.PendingReveal]: "😮",
-  [GameStatusName.Waiting]: "😴",
-  [GameStatusName.Won]: "😎",
-  [GameStatusName.Lost]: "😵",
+const GameStateEmojiMap: Record<GameStatus, string> = {
+  [GameStatuses.InProgress]: "🙂",
+  [GameStatuses.Paused]: "🙂",
+  [GameStatuses.PendingReveal]: "😮",
+  [GameStatuses.Waiting]: "😴",
+  [GameStatuses.Won]: "😎",
+  [GameStatuses.Lost]: "😵",
 };
 
 const PlayerButton = ({ gameStatus }: Props) => {
@@ -37,7 +41,8 @@ const PlayerButton = ({ gameStatus }: Props) => {
       onClick={handleClick}
       onMouseDown={() => setActive(true)}
       onMouseUp={() => setActive(false)}
-      onMouseLeave={() => setActive(false)}>
+      onMouseLeave={() => setActive(false)}
+    >
       {GameStateEmojiMap[gameStatus]}
     </div>
   );

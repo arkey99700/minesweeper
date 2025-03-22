@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { MinefieldTile } from "../../classes/Minefield";
 import { flagTile, unflagTile } from "../../store/slices/minefieldSlice";
 import { AppDispatch, AppState } from "../../store/store";
-import { GameStatusName, setStatus } from "../../store/slices/gameSlice";
+import { GameStatuses, setStatus } from "../../store/slices/gameSlice";
 import { useSelector } from "react-redux";
 import { checkTile } from "../../store/thunks/minefieldThunks";
 import { startTimer } from "../../store/thunks/timerThunks";
@@ -19,7 +19,7 @@ const FieldTile = ({ tile }: Props) => {
   const { timerId } = useSelector((state: AppState) => state.timer);
 
   function handleMouseDown(event: MouseEvent) {
-    if (tile.isRevealed || status === GameStatusName.Lost) {
+    if (tile.isRevealed || status === GameStatuses.Lost) {
       return false;
     }
 
@@ -27,16 +27,16 @@ const FieldTile = ({ tile }: Props) => {
       tile.isFlagged ? dispatch(unflagTile(tile)) : dispatch(flagTile(tile));
     } else {
       setActive(true);
-      dispatch(setStatus(GameStatusName.PendingReveal));
+      dispatch(setStatus(GameStatuses.PendingReveal));
     }
   }
 
   function handleMouseUp(event: MouseEvent) {
-    if (status === GameStatusName.Lost) return false;
+    if (status === GameStatuses.Lost) return false;
 
     if (tile.isRevealed) {
-      if (status === GameStatusName.PendingReveal) {
-        return dispatch(setStatus(GameStatusName.InProgress));
+      if (status === GameStatuses.PendingReveal) {
+        return dispatch(setStatus(GameStatuses.InProgress));
       } else {
         return false;
       }
@@ -52,7 +52,7 @@ const FieldTile = ({ tile }: Props) => {
       }
 
       setActive(false);
-      dispatch(setStatus(GameStatusName.InProgress));
+      dispatch(setStatus(GameStatuses.InProgress));
 
       if (!tile.isRevealed) {
         dispatch(checkTile(tile));
@@ -65,13 +65,13 @@ const FieldTile = ({ tile }: Props) => {
       setActive(false);
 
       if (
-        status === GameStatusName.PendingReveal &&
+        status === GameStatuses.PendingReveal &&
         (!event.relatedTarget ||
           !(event.relatedTarget as HTMLElement).closest(`.${style.tile}`))
       ) {
         console.log(event.relatedTarget);
 
-        dispatch(setStatus(GameStatusName.InProgress));
+        dispatch(setStatus(GameStatuses.InProgress));
       }
     }
   }
@@ -114,7 +114,8 @@ const FieldTile = ({ tile }: Props) => {
       }}
       onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
         e.preventDefault()
-      }>
+      }
+    >
       {getTileContent(tile)}
     </div>
   );

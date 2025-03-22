@@ -7,7 +7,7 @@ import {
   revealTile,
   showMinedTiles,
 } from "../slices/minefieldSlice";
-import { GameStatusName, setStatus } from "../slices/gameSlice";
+import { GameStatuses, setStatus } from "../slices/gameSlice";
 import { stopTimer } from "./timerThunks";
 
 export const checkTile = createAsyncThunk<
@@ -21,7 +21,7 @@ export const checkTile = createAsyncThunk<
 
   if (tile.isMined) {
     dispatch(showMinedTiles());
-    dispatch(setStatus(GameStatusName.Lost));
+    dispatch(setStatus(GameStatuses.Lost));
     dispatch(stopTimer());
     return;
   }
@@ -31,7 +31,7 @@ export const checkTile = createAsyncThunk<
 
   if (Minefield.checkForWin(grid, mineCount)) {
     dispatch(flagMinedTiles());
-    dispatch(setStatus(GameStatusName.Won));
+    dispatch(setStatus(GameStatuses.Won));
     dispatch(stopTimer());
     return;
   }

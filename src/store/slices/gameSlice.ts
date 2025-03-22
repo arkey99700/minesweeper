@@ -1,21 +1,23 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export enum GameStatusName {
-  Paused,
-  InProgress,
-  PendingReveal,
-  Waiting,
-  Won,
-  Lost,
-}
+export const GameStatuses = {
+  Paused: 0,
+  InProgress: 1,
+  PendingReveal: 2,
+  Waiting: 3,
+  Won: 4,
+  Lost: 5,
+} as const;
+
+export type GameStatus = (typeof GameStatuses)[keyof typeof GameStatuses];
 
 export type GameState = {
-  status: GameStatusName;
+  status: GameStatus;
   settingsDispayed: boolean;
 };
 
 const initialState: GameState = {
-  status: GameStatusName.Paused,
+  status: GameStatuses.Paused,
   settingsDispayed: true,
 };
 
@@ -23,11 +25,11 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    setStatus: (state, action: PayloadAction<GameStatusName>) => {
+    setStatus: (state, action: PayloadAction<GameStatus>) => {
       state.status = action.payload;
     },
     refreshGame: (state) => {
-      state.status = GameStatusName.InProgress;
+      state.status = GameStatuses.InProgress;
     },
   },
 });

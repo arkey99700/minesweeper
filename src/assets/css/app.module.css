@@ -170,30 +170,25 @@ body {
   opacity: 0.5;
 }
 
-.popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+.modal {
+  padding: 25px;
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.modal::backdrop {
+  background-color: #ffffff;
+  opacity: 0.6;
+}
+
+.options {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   row-gap: 15px;
-  padding: 25px;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-
-.overlay {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #ffffff;
-  opacity: 0.6;
-  z-index: 1;
 }
 
 .option {
