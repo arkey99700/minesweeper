@@ -1,4 +1,4 @@
-import Minefield, { MinefieldTile } from '../../classes/Minefield';
+import { MinefieldTile, checkForWin } from '../../lib/minefield';
 import { createAppAsyncThunk } from '../store';
 import {
   flagMinedTiles,
@@ -26,7 +26,7 @@ export const checkTile = createAppAsyncThunk(
     const state = getState();
     const { grid, mineCount } = state.minefield;
 
-    if (Minefield.checkForWin(grid, mineCount)) {
+    if (checkForWin(grid, mineCount)) {
       dispatch(flagMinedTiles());
       dispatch(setStatus(GameStatuses.Won));
       dispatch(stopTimer());

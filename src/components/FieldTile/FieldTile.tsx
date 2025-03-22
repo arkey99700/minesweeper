@@ -1,11 +1,9 @@
 import style from '../../assets/css/app.module.css';
 import { MouseEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { MinefieldTile } from '../../classes/Minefield';
+import { MinefieldTile } from '../../lib/minefield';
 import { flagTile, unflagTile } from '../../store/slices/minefieldSlice';
-import { AppDispatch, AppState } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { GameStatuses, setStatus } from '../../store/slices/gameSlice';
-import { useSelector } from 'react-redux';
 import { checkTile } from '../../store/thunks/minefieldThunks';
 import { startTimer } from '../../store/thunks/timerThunks';
 
@@ -14,9 +12,9 @@ interface Props {
 }
 
 const FieldTile = ({ tile }: Props) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { status } = useSelector((state: AppState) => state.game);
-  const { timerId } = useSelector((state: AppState) => state.timer);
+  const dispatch = useAppDispatch();
+  const { status } = useAppSelector((state) => state.game);
+  const { timerId } = useAppSelector((state) => state.timer);
 
   function handleMouseDown(event: MouseEvent) {
     if (tile.isRevealed || status === GameStatuses.Lost) {

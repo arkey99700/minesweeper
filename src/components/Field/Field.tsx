@@ -1,6 +1,6 @@
 import style from '../../assets/css/app.module.css';
 import FieldTile from '../FieldTile/FieldTile';
-import { MinefieldTile } from '../../classes/Minefield';
+import { MinefieldTile } from '../../lib/minefield';
 
 interface Props {
   minefield: MinefieldTile[][];

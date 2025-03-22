@@ -1,5 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import Minefield, { MinefieldTile } from '../../classes/Minefield';
+import {
+  createGrid,
+  MinefieldTile,
+  revealMinedTiles,
+  revealAdjacentTiles as doRevealAdjacentTiles,
+  flagMinedTiles as doFlagMinedTiles,
+} from '../../lib/minefield';
 
 export interface MinefieldState {
   width: number;
@@ -17,11 +23,7 @@ const initialState: MinefieldState = {
   height: DEFAULT_MINEFIELD_HEIGHT,
   mineCount: 0,
   flagCount: 0,
-  grid: Minefield.createGrid(
-    DEFAULT_MINEFIELD_WIDTH,
-    DEFAULT_MINEFIELD_HEIGHT,
-    0
-  ),
+  grid: createGrid(DEFAULT_MINEFIELD_WIDTH, DEFAULT_MINEFIELD_HEIGHT, 0),
 };
 
 const minefieldSlice = createSlice({
@@ -32,14 +34,14 @@ const minefieldSlice = createSlice({
       state.grid[action.payload.y][action.payload.x].isRevealed = true;
     },
     revealAdjacentTiles: (state, action: PayloadAction<MinefieldTile>) => {
-      state.grid = Minefield.revealAdjacentTiles(
+      state.grid = doRevealAdjacentTiles(
         state.grid,
         action.payload.x,
         action.payload.y
       );
     },
     showMinedTiles: (state) => {
-      state.grid = Minefield.revealMinedTiles(state.grid);
+      state.grid = revealMinedTiles(state.grid);
     },
     flagTile: (state, action: PayloadAction<MinefieldTile>) => {
       if (state.flagCount - 1 >= 0) {
@@ -52,7 +54,7 @@ const minefieldSlice = createSlice({
       state.grid[action.payload.y][action.payload.x].isFlagged = false;
     },
     flagMinedTiles: (state) => {
-      state.grid = Minefield.flagMinedTiles(state.grid);
+      state.grid = doFlagMinedTiles(state.grid);
     },
     createField: (
       state,
@@ -62,7 +64,7 @@ const minefieldSlice = createSlice({
         mineCount: number;
       }>
     ) => {
-      state.grid = Minefield.createGrid(
+      state.grid = createGrid(
         action.payload.height,
         action.payload.width,
         action.payload.mineCount
