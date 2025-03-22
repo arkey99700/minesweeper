@@ -1,0 +1,203 @@
+@import "fonts.css";
+
+html {
+  height: 100vh;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.container {
+  padding: 15px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  height: 51px;
+  margin-bottom: 15px;
+}
+
+.fitContent {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.grey {
+  background-color: #dddddd;
+}
+
+.greyHover:hover {
+  background-color: #eeeeee;
+}
+
+.lightGrey {
+  background-color: #ececec;
+}
+
+.borderOutset {
+  border: 3px outset #ffffff;
+}
+
+.borderOutsetSmall {
+  border: 2px outset #ffffff;
+}
+
+.borderInset {
+  border: 3px inset #ffffff;
+}
+
+.borderInsetSmall {
+  border: 1px solid #c0c0c0;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.tile {
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  font-family: monospace;
+  font-size: 1.5em;
+  font-weight: 700;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tile--1 {
+  color: dodgerblue;
+}
+
+.tile--2 {
+  color: forestgreen;
+}
+
+.tile--3 {
+  color: darkred;
+}
+
+.tile--4 {
+  color: darkblue;
+}
+
+.tile--5 {
+  color: saddlebrown;
+}
+
+.tile--6 {
+  color: darkcyan;
+}
+
+.tile--7 {
+  color: black;
+}
+
+.tile--8 {
+  color: dimgrey;
+}
+
+.tile--mined {
+  color: crimson;
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.field--10 {
+  width: 300px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.button--smile {
+  width: 45px;
+  height: 45px;
+  font-size: 26px;
+  line-height: 1rem;
+}
+
+.counter {
+  width: 83px;
+  background-color: #000000;
+  color: crimson;
+  font-family: "Digital Dismay", monospace;
+  font-size: 65px;
+  line-height: 0.75;
+  text-align: right;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.counterNumbers {
+  position: relative;
+}
+
+.counterNumbers::before {
+  position: absolute;
+  top: 9px;
+  left: -57px;
+  content: "000000";
+  opacity: 0.5;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 15px;
+  padding: 25px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.overlay {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
