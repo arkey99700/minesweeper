@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export const GameStatuses = {
   Paused: 0,
@@ -11,10 +11,10 @@ export const GameStatuses = {
 
 export type GameStatus = (typeof GameStatuses)[keyof typeof GameStatuses];
 
-export type GameState = {
+export interface GameState {
   status: GameStatus;
   settingsDispayed: boolean;
-};
+}
 
 const initialState: GameState = {
   status: GameStatuses.Paused,
@@ -22,7 +22,7 @@ const initialState: GameState = {
 };
 
 const gameSlice = createSlice({
-  name: "game",
+  name: 'game',
   initialState,
   reducers: {
     setStatus: (state, action: PayloadAction<GameStatus>) => {

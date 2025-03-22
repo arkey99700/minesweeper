@@ -1,7 +1,11 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import gameReducer from "./slices/gameSlice";
-import timerReducer from "./slices/timerSlice";
-import minefieldReducer from "./slices/minefieldSlice";
+import {
+  combineReducers,
+  configureStore,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
+import gameReducer from './slices/gameSlice';
+import timerReducer from './slices/timerSlice';
+import minefieldReducer from './slices/minefieldSlice';
 
 const appReducer = combineReducers({
   game: gameReducer,
@@ -15,5 +19,13 @@ const store = configureStore({
 
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export interface AppThunkApiConfig {
+  state: AppState;
+  dispatch: AppDispatch;
+}
+
+export const createAppAsyncThunk =
+  createAsyncThunk.withTypes<AppThunkApiConfig>();
 
 export default store;

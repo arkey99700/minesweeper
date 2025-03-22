@@ -1,11 +1,15 @@
-import style from "./../../assets/css/app.module.css";
+import style from './../../assets/css/app.module.css';
 
-type Props = {
+interface Props {
   count: number;
-};
+}
+
+const MAX_COUNTER_NUMBER = 999;
 
 const Counter = ({ count }: Props) => {
-  const counterNumber = String(count > 999 ? 999 : count).padStart(3, "0");
+  const counterNumber = String(
+    count > MAX_COUNTER_NUMBER ? MAX_COUNTER_NUMBER : count
+  ).padStart(3, '0');
 
   return (
     <div className={`${style.counter} ${style.borderInset}`}>

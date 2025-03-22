@@ -1,4 +1,4 @@
-@import "fonts.css";
+@import 'fonts.css';
 
 html {
   height: 100vh;
@@ -147,7 +147,7 @@ body {
   width: 83px;
   background-color: #000000;
   color: crimson;
-  font-family: "Digital Dismay", monospace;
+  font-family: 'Digital Dismay', monospace;
   font-size: 65px;
   line-height: 0.75;
   text-align: right;
@@ -166,7 +166,7 @@ body {
   position: absolute;
   top: 9px;
   left: -57px;
-  content: "000000";
+  content: '000000';
   opacity: 0.5;
 }
 

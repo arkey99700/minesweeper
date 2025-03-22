@@ -1,12 +1,13 @@
-export type MinefieldTile = {
+export interface MinefieldTile {
   isRevealed: boolean;
   isMined: boolean;
   isFlagged: boolean;
   number: number;
   x: number;
   y: number;
-};
+}
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default class Minefield {
   public static createGrid(
     width: number,
@@ -23,9 +24,9 @@ export default class Minefield {
   ): boolean {
     let notRevealedTilesCount = 0;
 
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (!grid[i][j].isRevealed) {
+    for (const row of grid) {
+      for (const tile of row) {
+        if (!tile.isRevealed) {
           notRevealedTilesCount++;
         }
       }
@@ -74,10 +75,10 @@ export default class Minefield {
   }
 
   public static revealMinedTiles(grid: MinefieldTile[][]): MinefieldTile[][] {
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (grid[i][j].isMined && !grid[i][j].isFlagged) {
-          grid[i][j].isRevealed = true;
+    for (const row of grid) {
+      for (const tile of row) {
+        if (tile.isMined && !tile.isFlagged) {
+          tile.isRevealed = true;
         }
       }
     }

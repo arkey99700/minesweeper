@@ -1,16 +1,20 @@
-import { ReactNode, useEffect, useRef } from "react";
-import style from "../../assets/css/app.module.css";
+import { ReactNode, useEffect, useRef } from 'react';
+import style from '../../assets/css/app.module.css';
 
-type Props = {
+interface Props {
   open: boolean;
   children: ReactNode;
-};
+}
 
 const Modal = ({ open, children }: Props) => {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    open ? ref.current?.showModal() : ref.current?.close();
+    if (open) {
+      ref.current?.showModal();
+    } else {
+      ref.current?.close();
+    }
   }, [open]);
 
   return (

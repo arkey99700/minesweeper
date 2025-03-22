@@ -1,26 +1,26 @@
-import style from "../../assets/css/app.module.css";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import style from '../../assets/css/app.module.css';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   GameStatus,
   GameStatuses,
   refreshGame,
-} from "../../store/slices/gameSlice";
-import { AppDispatch } from "../../store/store";
-import { restartTimer } from "../../store/thunks/timerThunks";
-import { createField } from "../../store/slices/minefieldSlice";
+} from '../../store/slices/gameSlice';
+import { AppDispatch } from '../../store/store';
+import { restartTimer } from '../../store/thunks/timerThunks';
+import { createField } from '../../store/slices/minefieldSlice';
 
-type Props = {
+interface Props {
   gameStatus: GameStatus;
-};
+}
 
 const GameStateEmojiMap: Record<GameStatus, string> = {
-  [GameStatuses.InProgress]: "🙂",
-  [GameStatuses.Paused]: "🙂",
-  [GameStatuses.PendingReveal]: "😮",
-  [GameStatuses.Waiting]: "😴",
-  [GameStatuses.Won]: "😎",
-  [GameStatuses.Lost]: "😵",
+  [GameStatuses.InProgress]: '🙂',
+  [GameStatuses.Paused]: '🙂',
+  [GameStatuses.PendingReveal]: '😮',
+  [GameStatuses.Waiting]: '😴',
+  [GameStatuses.Won]: '😎',
+  [GameStatuses.Lost]: '😵',
 };
 
 const PlayerButton = ({ gameStatus }: Props) => {
@@ -35,7 +35,7 @@ const PlayerButton = ({ gameStatus }: Props) => {
 
   return (
     <div
-      className={`${style.button} ${style["button--smile"]} ${
+      className={`${style.button} ${style['button--smile']} ${
         active ? style.borderInset : style.borderOutset
       } ${style.greyHover}`}
       onClick={handleClick}

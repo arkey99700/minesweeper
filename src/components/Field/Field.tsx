@@ -1,10 +1,10 @@
-import style from "../../assets/css/app.module.css";
-import FieldTile from "../FieldTile/FieldTile";
-import { MinefieldTile } from "../../classes/Minefield";
+import style from '../../assets/css/app.module.css';
+import FieldTile from '../FieldTile/FieldTile';
+import { MinefieldTile } from '../../classes/Minefield';
 
-type Props = {
+interface Props {
   minefield: MinefieldTile[][];
-};
+}
 
 const Field = ({ minefield }: Props) => {
   const fieldTiles = minefield.map((row, rowIndex) =>
@@ -16,9 +16,10 @@ const Field = ({ minefield }: Props) => {
   return (
     <div
       id="minefield"
-      className={`${style.field} ${style["field--" + minefield[0].length]} ${
+      className={`${style.field} ${style['field--' + minefield[0].length]} ${
         style.borderInset
-      }`}>
+      }`}
+    >
       {fieldTiles}
     </div>
   );

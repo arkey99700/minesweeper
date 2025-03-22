@@ -1,17 +1,17 @@
-import style from "../../assets/css/app.module.css";
-import { MouseEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { MinefieldTile } from "../../classes/Minefield";
-import { flagTile, unflagTile } from "../../store/slices/minefieldSlice";
-import { AppDispatch, AppState } from "../../store/store";
-import { GameStatuses, setStatus } from "../../store/slices/gameSlice";
-import { useSelector } from "react-redux";
-import { checkTile } from "../../store/thunks/minefieldThunks";
-import { startTimer } from "../../store/thunks/timerThunks";
+import style from '../../assets/css/app.module.css';
+import { MouseEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { MinefieldTile } from '../../classes/Minefield';
+import { flagTile, unflagTile } from '../../store/slices/minefieldSlice';
+import { AppDispatch, AppState } from '../../store/store';
+import { GameStatuses, setStatus } from '../../store/slices/gameSlice';
+import { useSelector } from 'react-redux';
+import { checkTile } from '../../store/thunks/minefieldThunks';
+import { startTimer } from '../../store/thunks/timerThunks';
 
-type Props = {
+interface Props {
   tile: MinefieldTile;
-};
+}
 
 const FieldTile = ({ tile }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +24,11 @@ const FieldTile = ({ tile }: Props) => {
     }
 
     if (event.button === 2) {
-      tile.isFlagged ? dispatch(unflagTile(tile)) : dispatch(flagTile(tile));
+      if (tile.isFlagged) {
+        dispatch(unflagTile(tile));
+      } else {
+        dispatch(flagTile(tile));
+      }
     } else {
       setActive(true);
       dispatch(setStatus(GameStatuses.PendingReveal));
@@ -78,18 +82,18 @@ const FieldTile = ({ tile }: Props) => {
 
   function getTileContent(tile: MinefieldTile): string | number {
     if (tile.isMined && tile.isRevealed) {
-      return "💣";
+      return '💣';
     }
 
     if (tile.isFlagged && !tile.isRevealed) {
-      return "🚩";
+      return '🚩';
     }
 
     if (!tile.isRevealed) {
-      return "";
+      return '';
     }
 
-    return tile.number || "";
+    return tile.number || '';
   }
 
   const [active, setActive] = useState(false);
@@ -99,12 +103,12 @@ const FieldTile = ({ tile }: Props) => {
       className={`
       ${tile.isRevealed ? style.borderInsetSmall : style.borderOutsetSmall} 
       ${tile.isRevealed ? style.lightGrey : style.grey} 
-      ${tile.number && !tile.isMined ? style["tile--" + tile.number] : ""} 
+      ${tile.number && !tile.isMined ? style['tile--' + tile.number] : ''} 
       ${style.tile} ${style.greyHover} 
       ${
         active
-          ? style.borderInsetSmall + " " + style.lightGrey
-          : style.borderOutsetSmall + " " + style.grey
+          ? style.borderInsetSmall + ' ' + style.lightGrey
+          : style.borderOutsetSmall + ' ' + style.grey
       }`}
       onMouseUp={handleMouseUp}
       onMouseOut={handleMouseOut}

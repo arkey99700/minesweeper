@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import style from "../../assets/css/app.module.css";
+import { useRef, useState } from 'react';
+import style from '../../assets/css/app.module.css';
 
 const Options = () => {
   const heightInputRef = useRef<HTMLInputElement>(null);
@@ -8,9 +8,9 @@ const Options = () => {
   const [maxMineCount, setMaxMineCount] = useState(1);
 
   function changeMaxMineCount() {
-    let mineCount = Math.floor(
-      (Number(heightInputRef.current!.value) +
-        Number(widthInputRef.current!.value)) /
+    const mineCount = Math.floor(
+      (Number(heightInputRef.current?.value) +
+        Number(widthInputRef.current?.value)) /
         2
     );
 

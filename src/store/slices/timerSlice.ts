@@ -1,16 +1,16 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export type TimerState = {
+export interface TimerState {
   time: number;
   timerId?: number;
-};
+}
 
 const initialState: TimerState = {
   time: 0,
 };
 
 const timerSlice = createSlice({
-  name: "timer",
+  name: 'timer',
   initialState,
   reducers: {
     setTimerId: (state, action: PayloadAction<number | undefined>) => {

@@ -1,27 +1,31 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import Minefield, { MinefieldTile } from "../../classes/Minefield";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import Minefield, { MinefieldTile } from '../../classes/Minefield';
 
-export type MinefieldState = {
+export interface MinefieldState {
   width: number;
   height: number;
   mineCount: number;
   flagCount: number;
   grid: MinefieldTile[][];
-};
+}
 
-const initialWidth = 10;
-const initialHeight = 10;
+const DEFAULT_MINEFIELD_WIDTH = 10;
+const DEFAULT_MINEFIELD_HEIGHT = 10;
 
 const initialState: MinefieldState = {
-  width: initialWidth,
-  height: initialHeight,
+  width: DEFAULT_MINEFIELD_WIDTH,
+  height: DEFAULT_MINEFIELD_HEIGHT,
   mineCount: 0,
   flagCount: 0,
-  grid: Minefield.createGrid(initialWidth, initialHeight, 0),
+  grid: Minefield.createGrid(
+    DEFAULT_MINEFIELD_WIDTH,
+    DEFAULT_MINEFIELD_HEIGHT,
+    0
+  ),
 };
 
 const minefieldSlice = createSlice({
-  name: "minefield",
+  name: 'minefield',
   initialState,
   reducers: {
     revealTile: (state, action: PayloadAction<MinefieldTile>) => {
