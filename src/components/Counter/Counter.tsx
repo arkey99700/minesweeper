@@ -1,21 +1,19 @@
 import style from './../../assets/css/app.module.css';
 
-interface Props {
+type Props = {
   count: number;
-}
+};
 
 const MAX_COUNTER_NUMBER = 999;
 
-const Counter = ({ count }: Props) => {
-  const counterNumber = String(
+export default function Counter({ count }: Props) {
+  const counterValue = String(
     count > MAX_COUNTER_NUMBER ? MAX_COUNTER_NUMBER : count
   ).padStart(3, '0');
 
   return (
     <div className={`${style.counter} ${style.borderInset}`}>
-      <span className={`${style.counterNumbers}`}>{counterNumber}</span>
+      <span className={`${style.counterNumbers}`}>{counterValue}</span>
     </div>
   );
-};
-
-export default Counter;
+}

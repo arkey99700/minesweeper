@@ -1,10 +1,10 @@
-import { MinefieldTile, checkForWin } from '../../lib/minefield';
+import { MinefieldTile, isGameWon } from '../../lib/minefield';
 import { createAppAsyncThunk } from '../store';
 import {
   flagMinedTiles,
   revealAdjacentTiles,
   revealTile,
-  showMinedTiles,
+  revealMinedTiles,
 } from '../slices/minefieldSlice';
 import { GameStatuses, setStatus } from '../slices/gameSlice';
 import { stopTimer } from './timerThunks';
@@ -17,22 +17,21 @@ export const checkTile = createAppAsyncThunk(
     dispatch(revealTile(tile));
 
     if (tile.isMined) {
-      dispatch(showMinedTiles());
+      dispatch(revealMinedTiles());
       dispatch(setStatus(GameStatuses.Lost));
       dispatch(stopTimer());
       return;
     }
 
-    const state = getState();
-    const { grid, mineCount } = state.minefield;
+    dispatch(revealAdjacentTiles(tile));
 
-    if (checkForWin(grid, mineCount)) {
+    const { grid, mineCount } = getState().minefield;
+
+    if (isGameWon(grid, mineCount)) {
       dispatch(flagMinedTiles());
       dispatch(setStatus(GameStatuses.Won));
       dispatch(stopTimer());
       return;
     }
-
-    dispatch(revealAdjacentTiles(tile));
   }
 );

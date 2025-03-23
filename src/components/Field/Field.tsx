@@ -1,12 +1,13 @@
+import { CSSProperties } from 'react';
 import style from '../../assets/css/app.module.css';
 import FieldTile from '../FieldTile/FieldTile';
 import { MinefieldTile } from '../../lib/minefield';
 
-interface Props {
+type Props = {
   minefield: MinefieldTile[][];
-}
+};
 
-const Field = ({ minefield }: Props) => {
+export default function Field({ minefield }: Props) {
   const fieldTiles = minefield.map((row, rowIndex) =>
     row.map((tile, index) => (
       <FieldTile key={String(rowIndex) + index} tile={tile} />
@@ -19,10 +20,14 @@ const Field = ({ minefield }: Props) => {
       className={`${style.field} ${style['field--' + minefield[0].length]} ${
         style.borderInset
       }`}
+      style={
+        {
+          '--field-x': minefield[0].length,
+          '--field-y': minefield.length,
+        } as CSSProperties
+      }
     >
       {fieldTiles}
     </div>
   );
-};
-
-export default Field;
+}

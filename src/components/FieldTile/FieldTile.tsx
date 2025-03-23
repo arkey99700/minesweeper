@@ -7,18 +7,18 @@ import { GameStatuses, setStatus } from '../../store/slices/gameSlice';
 import { checkTile } from '../../store/thunks/minefieldThunks';
 import { startTimer } from '../../store/thunks/timerThunks';
 
-interface Props {
+type Props = {
   tile: MinefieldTile;
-}
+};
 
-const FieldTile = ({ tile }: Props) => {
+export default function FieldTile({ tile }: Props) {
   const dispatch = useAppDispatch();
   const { status } = useAppSelector((state) => state.game);
   const { timerId } = useAppSelector((state) => state.timer);
 
   function handleMouseDown(event: MouseEvent) {
     if (tile.isRevealed || status === GameStatuses.Lost) {
-      return false;
+      return;
     }
 
     if (event.button === 2) {
@@ -28,20 +28,26 @@ const FieldTile = ({ tile }: Props) => {
         dispatch(flagTile(tile));
       }
     } else {
+      if (tile.isFlagged) {
+        return;
+      }
+
       setActive(true);
       dispatch(setStatus(GameStatuses.PendingReveal));
     }
   }
 
   function handleMouseUp(event: MouseEvent) {
-    if (status === GameStatuses.Lost) return false;
+    if (status === GameStatuses.Lost) {
+      return;
+    }
 
     if (tile.isRevealed) {
       if (status === GameStatuses.PendingReveal) {
-        return dispatch(setStatus(GameStatuses.InProgress));
-      } else {
-        return false;
+        dispatch(setStatus(GameStatuses.InProgress));
       }
+
+      return;
     }
 
     if (!timerId) {
@@ -50,7 +56,7 @@ const FieldTile = ({ tile }: Props) => {
 
     if (event.button === 0) {
       if (tile.isFlagged) {
-        return false;
+        return;
       }
 
       setActive(false);
@@ -59,6 +65,12 @@ const FieldTile = ({ tile }: Props) => {
       if (!tile.isRevealed) {
         dispatch(checkTile(tile));
       }
+    }
+  }
+
+  function handleMouseOver(event: MouseEvent) {
+    if (event.button === 0 && event.buttons > 0) {
+      setActive(true);
     }
   }
 
@@ -71,8 +83,6 @@ const FieldTile = ({ tile }: Props) => {
         (!event.relatedTarget ||
           !(event.relatedTarget as HTMLElement).closest(`.${style.tile}`))
       ) {
-        console.log(event.relatedTarget);
-
         dispatch(setStatus(GameStatuses.InProgress));
       }
     }
@@ -108,12 +118,10 @@ const FieldTile = ({ tile }: Props) => {
           ? style.borderInsetSmall + ' ' + style.lightGrey
           : style.borderOutsetSmall + ' ' + style.grey
       }`}
-      onMouseUp={handleMouseUp}
-      onMouseOut={handleMouseOut}
       onMouseDown={handleMouseDown}
-      onMouseOver={(event: MouseEvent) => {
-        if (event.button === 0 && event.buttons > 0) setActive(true);
-      }}
+      onMouseUp={handleMouseUp}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
       onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
         e.preventDefault()
       }
@@ -121,6 +129,4 @@ const FieldTile = ({ tile }: Props) => {
       {getTileContent(tile)}
     </div>
   );
-};
-
-export default FieldTile;
+}

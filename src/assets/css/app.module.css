@@ -115,10 +115,9 @@ body {
 }
 
 .field {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(var(--field-x), 30px);
+  grid-template-rows: repeat(var(--field-y), 30px);
 }
 
 .field--10 {
@@ -192,7 +191,15 @@ body {
 }
 
 .option {
+  width: 100%;
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+}
+
+.input {
+}
+
+.input:focus {
+  outline: none;
 }

@@ -1,25 +1,24 @@
-export interface MinefieldTile {
+export type MinefieldTile = {
   isRevealed: boolean;
   isMined: boolean;
   isFlagged: boolean;
   number: number;
   x: number;
   y: number;
-}
+};
 
-export const createGrid = (
+export type MinefieldGrid = MinefieldTile[][];
+
+export const createMinefieldGrid = (
   width: number,
   height: number,
   mineCount: number
-): MinefieldTile[][] => {
+): MinefieldGrid => {
   const grid = createEmptyGrid(width, height);
   return placeMinesOnGrid(grid, mineCount);
 };
 
-export const checkForWin = (
-  grid: MinefieldTile[][],
-  mineCount: number
-): boolean => {
+export const isGameWon = (grid: MinefieldGrid, mineCount: number): boolean => {
   let notRevealedTilesCount = 0;
 
   for (const row of grid) {
@@ -33,7 +32,7 @@ export const checkForWin = (
   return notRevealedTilesCount === mineCount ? true : false;
 };
 
-export const flagMinedTiles = (grid: MinefieldTile[][]): MinefieldTile[][] => {
+export const flagMinedTiles = (grid: MinefieldGrid): MinefieldGrid => {
   return grid.map((row) =>
     row.map((cell) => {
       if (cell.isMined) cell.isFlagged = true;
@@ -42,11 +41,11 @@ export const flagMinedTiles = (grid: MinefieldTile[][]): MinefieldTile[][] => {
   );
 };
 
-export const revealAdjacentTiles = (
-  grid: MinefieldTile[][],
+export const revealAdjacentTilesRecursive = (
+  grid: MinefieldGrid,
   x: number,
   y: number
-): MinefieldTile[][] => {
+): MinefieldGrid => {
   if (grid[y][x].number) {
     return grid;
   }
@@ -62,23 +61,9 @@ export const revealAdjacentTiles = (
           currentTile.isRevealed = true;
 
           if (!currentTile.number) {
-            revealAdjacentTiles(grid, x + j, y + i);
+            revealAdjacentTilesRecursive(grid, x + j, y + i);
           }
         }
-      }
-    }
-  }
-
-  return grid;
-};
-
-export const revealMinedTiles = (
-  grid: MinefieldTile[][]
-): MinefieldTile[][] => {
-  for (const row of grid) {
-    for (const tile of row) {
-      if (tile.isMined && !tile.isFlagged) {
-        tile.isRevealed = true;
       }
     }
   }
@@ -89,8 +74,8 @@ export const revealMinedTiles = (
 export const createEmptyGrid = (
   width: number,
   height: number
-): MinefieldTile[][] => {
-  const grid: MinefieldTile[][] = [];
+): MinefieldGrid => {
+  const grid: MinefieldGrid = [];
 
   for (let i = 0; i < height; i++) {
     grid[i] = [];
@@ -110,9 +95,9 @@ export const createEmptyGrid = (
 };
 
 export const placeMinesOnGrid = (
-  grid: MinefieldTile[][],
+  grid: MinefieldGrid,
   mineCount: number
-): MinefieldTile[][] => {
+): MinefieldGrid => {
   const mines = [];
 
   outer: for (let i = 0; i < mineCount; i++) {

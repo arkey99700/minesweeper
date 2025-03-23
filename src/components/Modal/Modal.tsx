@@ -1,12 +1,12 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import style from '../../assets/css/app.module.css';
 
-interface Props {
+type Props = {
   open: boolean;
   children: ReactNode;
-}
+};
 
-const Modal = ({ open, children }: Props) => {
+export default function Modal({ open, children }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -25,6 +25,4 @@ const Modal = ({ open, children }: Props) => {
       {children}
     </dialog>
   );
-};
-
-export default Modal;
+}

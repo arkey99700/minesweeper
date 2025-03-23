@@ -1,20 +1,20 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export const GameStatuses = {
-  Paused: 0,
-  InProgress: 1,
-  PendingReveal: 2,
-  Waiting: 3,
-  Won: 4,
-  Lost: 5,
+  Paused: 'paused',
+  InProgress: 'in-progress',
+  PendingReveal: 'pending-reveal',
+  Waiting: 'waiting',
+  Won: 'won',
+  Lost: 'lost',
 } as const;
 
 export type GameStatus = (typeof GameStatuses)[keyof typeof GameStatuses];
 
-export interface GameState {
+export type GameState = {
   status: GameStatus;
   settingsDispayed: boolean;
-}
+};
 
 const initialState: GameState = {
   status: GameStatuses.Paused,
@@ -31,8 +31,12 @@ const gameSlice = createSlice({
     refreshGame: (state) => {
       state.status = GameStatuses.InProgress;
     },
+    setSettingsDisplayed: (state, action: PayloadAction<boolean>) => {
+      state.settingsDispayed = action.payload;
+    },
   },
 });
 
-export const { setStatus, refreshGame } = gameSlice.actions;
+export const { setStatus, refreshGame, setSettingsDisplayed } =
+  gameSlice.actions;
 export default gameSlice.reducer;

@@ -1,29 +1,33 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
-  createGrid,
   MinefieldTile,
-  revealMinedTiles,
-  revealAdjacentTiles as doRevealAdjacentTiles,
-  flagMinedTiles as doFlagMinedTiles,
+  MinefieldGrid,
+  createMinefieldGrid,
+  revealAdjacentTilesRecursive,
+  createEmptyGrid,
 } from '../../lib/minefield';
+import {
+  DEFAULT_MINEFIELD_HEIGHT,
+  DEFAULT_MINEFIELD_WIDTH,
+} from '../../lib/constants';
 
-export interface MinefieldState {
-  width: number;
+export type MinefieldParameters = {
   height: number;
+  width: number;
   mineCount: number;
-  flagCount: number;
-  grid: MinefieldTile[][];
-}
+};
 
-const DEFAULT_MINEFIELD_WIDTH = 10;
-const DEFAULT_MINEFIELD_HEIGHT = 10;
+export type MinefieldState = MinefieldParameters & {
+  flagCount: number;
+  grid: MinefieldGrid;
+};
 
 const initialState: MinefieldState = {
   width: DEFAULT_MINEFIELD_WIDTH,
   height: DEFAULT_MINEFIELD_HEIGHT,
   mineCount: 0,
   flagCount: 0,
-  grid: createGrid(DEFAULT_MINEFIELD_WIDTH, DEFAULT_MINEFIELD_HEIGHT, 0),
+  grid: createEmptyGrid(DEFAULT_MINEFIELD_WIDTH, DEFAULT_MINEFIELD_HEIGHT),
 };
 
 const minefieldSlice = createSlice({
@@ -34,14 +38,20 @@ const minefieldSlice = createSlice({
       state.grid[action.payload.y][action.payload.x].isRevealed = true;
     },
     revealAdjacentTiles: (state, action: PayloadAction<MinefieldTile>) => {
-      state.grid = doRevealAdjacentTiles(
+      state.grid = revealAdjacentTilesRecursive(
         state.grid,
         action.payload.x,
         action.payload.y
       );
     },
-    showMinedTiles: (state) => {
-      state.grid = revealMinedTiles(state.grid);
+    revealMinedTiles: (state) => {
+      for (const row of state.grid) {
+        for (const tile of row) {
+          if (tile.isMined && !tile.isFlagged) {
+            tile.isRevealed = true;
+          }
+        }
+      }
     },
     flagTile: (state, action: PayloadAction<MinefieldTile>) => {
       if (state.flagCount - 1 >= 0) {
@@ -54,22 +64,20 @@ const minefieldSlice = createSlice({
       state.grid[action.payload.y][action.payload.x].isFlagged = false;
     },
     flagMinedTiles: (state) => {
-      state.grid = doFlagMinedTiles(state.grid);
+      state.grid.map((row) =>
+        row.map((cell) => {
+          if (cell.isMined) cell.isFlagged = true;
+          return cell;
+        })
+      );
     },
-    createField: (
-      state,
-      action: PayloadAction<{
-        height: number;
-        width: number;
-        mineCount: number;
-      }>
-    ) => {
-      state.grid = createGrid(
+    createMinefield: (state, action: PayloadAction<MinefieldParameters>) => {
+      state.grid = createMinefieldGrid(
         action.payload.height,
         action.payload.width,
         action.payload.mineCount
       );
-      state.flagCount = action.payload.mineCount;
+      state.mineCount = state.flagCount = action.payload.mineCount;
     },
   },
 });
@@ -80,7 +88,7 @@ export const {
   revealTile,
   revealAdjacentTiles,
   flagMinedTiles,
-  createField,
-  showMinedTiles,
+  createMinefield,
+  revealMinedTiles,
 } = minefieldSlice.actions;
 export default minefieldSlice.reducer;

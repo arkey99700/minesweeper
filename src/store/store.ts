@@ -20,11 +20,10 @@ const store = configureStore({
 
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export interface AppThunkApiConfig {
+export type AppThunkApiConfig = {
   state: AppState;
   dispatch: AppDispatch;
-}
+};
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<AppState>();

@@ -1,18 +1,15 @@
 import style from './assets/css/app.module.css';
-import { useSelector } from 'react-redux';
 import PlayerButton from './components/PlayerButton/PlayerButton';
 import Field from './components/Field/Field';
 import Counter from './components/Counter/Counter';
 import Modal from './components/Modal/Modal';
 import Options from './components/Options/Options';
-import { AppState } from './store/store';
+import { useAppSelector } from './store/store';
 
 function App() {
-  const { status, settingsDispayed } = useSelector(
-    (state: AppState) => state.game
-  );
-  const { grid, flagCount } = useSelector((state: AppState) => state.minefield);
-  const { time } = useSelector((state: AppState) => state.timer);
+  const { status, settingsDispayed } = useAppSelector((state) => state.game);
+  const { grid, flagCount } = useAppSelector((state) => state.minefield);
+  const { time } = useAppSelector((state) => state.timer);
 
   return (
     <>

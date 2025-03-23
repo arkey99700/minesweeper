@@ -1,20 +1,19 @@
 import style from '../../assets/css/app.module.css';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   GameStatus,
   GameStatuses,
   refreshGame,
 } from '../../store/slices/gameSlice';
-import { AppDispatch } from '../../store/store';
+import { AppDispatch, useAppDispatch } from '../../store/store';
 import { restartTimer } from '../../store/thunks/timerThunks';
-import { createField } from '../../store/slices/minefieldSlice';
+import { createMinefield } from '../../store/slices/minefieldSlice';
 
-interface Props {
+type Props = {
   gameStatus: GameStatus;
-}
+};
 
-const GameStateEmojiMap: Record<GameStatus, string> = {
+const GameStateEmojis: Record<GameStatus, string> = {
   [GameStatuses.InProgress]: '🙂',
   [GameStatuses.Paused]: '🙂',
   [GameStatuses.PendingReveal]: '😮',
@@ -23,14 +22,14 @@ const GameStateEmojiMap: Record<GameStatus, string> = {
   [GameStatuses.Lost]: '😵',
 };
 
-const PlayerButton = ({ gameStatus }: Props) => {
+export default function PlayerButton({ gameStatus }: Props) {
   const [active, setActive] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch<AppDispatch>();
 
   function handleClick() {
     dispatch(refreshGame());
     dispatch(restartTimer());
-    dispatch(createField({ height: 10, width: 10, mineCount: 10 }));
+    dispatch(createMinefield({ height: 10, width: 10, mineCount: 10 }));
   }
 
   return (
@@ -43,9 +42,7 @@ const PlayerButton = ({ gameStatus }: Props) => {
       onMouseUp={() => setActive(false)}
       onMouseLeave={() => setActive(false)}
     >
-      {GameStateEmojiMap[gameStatus]}
+      {GameStateEmojis[gameStatus]}
     </div>
   );
-};
-
-export default PlayerButton;
+}
