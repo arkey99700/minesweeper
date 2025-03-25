@@ -66,15 +66,18 @@ const minefieldSlice = createSlice({
     flagMinedTiles: (state) => {
       state.grid.map((row) =>
         row.map((cell) => {
-          if (cell.isMined) cell.isFlagged = true;
+          if (cell.isMined) {
+            cell.isFlagged = true;
+          }
+
           return cell;
         })
       );
     },
     createMinefield: (state, action: PayloadAction<MinefieldParameters>) => {
       state.grid = createMinefieldGrid(
-        action.payload.height,
         action.payload.width,
+        action.payload.height,
         action.payload.mineCount
       );
       state.mineCount = state.flagCount = action.payload.mineCount;

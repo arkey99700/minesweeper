@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import style from '../../assets/css/app.module.css';
+import style from '../../assets/css/app.module.scss';
 import FieldTile from '../FieldTile/FieldTile';
 import { MinefieldTile } from '../../lib/minefield';
 
@@ -17,9 +17,7 @@ export default function Field({ minefield }: Props) {
   return (
     <div
       id="minefield"
-      className={`${style.field} ${style['field--' + minefield[0].length]} ${
-        style.borderInset
-      }`}
+      className={`${style.field} ${style.borderInset}`}
       style={
         {
           '--field-x': minefield[0].length,

@@ -1,4 +1,4 @@
-import style from './../../assets/css/app.module.css';
+import style from './../../assets/css/app.module.scss';
 
 type Props = {
   count: number;

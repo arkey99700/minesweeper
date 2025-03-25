@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef } from 'react';
-import style from '../../assets/css/app.module.css';
+import style from '../../assets/css/app.module.scss';
 
 type Props = {
   open: boolean;

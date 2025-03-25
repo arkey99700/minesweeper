@@ -1,13 +1,7 @@
-import style from '../../assets/css/app.module.css';
-import { useState } from 'react';
-import {
-  GameStatus,
-  GameStatuses,
-  refreshGame,
-} from '../../store/slices/gameSlice';
+import style from '../../assets/css/app.module.scss';
+import { GameStatus, GameStatuses } from '../../store/slices/gameSlice';
 import { AppDispatch, useAppDispatch } from '../../store/store';
-import { restartTimer } from '../../store/thunks/timerThunks';
-import { createMinefield } from '../../store/slices/minefieldSlice';
+import { restartGame } from '../../store/thunks/gameThunks';
 
 type Props = {
   gameStatus: GameStatus;
@@ -23,24 +17,16 @@ const GameStateEmojis: Record<GameStatus, string> = {
 };
 
 export default function PlayerButton({ gameStatus }: Props) {
-  const [active, setActive] = useState(false);
   const dispatch = useAppDispatch<AppDispatch>();
 
   function handleClick() {
-    dispatch(refreshGame());
-    dispatch(restartTimer());
-    dispatch(createMinefield({ height: 10, width: 10, mineCount: 10 }));
+    dispatch(restartGame());
   }
 
   return (
     <div
-      className={`${style.button} ${style['button--smile']} ${
-        active ? style.borderInset : style.borderOutset
-      } ${style.greyHover}`}
+      className={`${style.button} ${style['button--smile']}`}
       onClick={handleClick}
-      onMouseDown={() => setActive(true)}
-      onMouseUp={() => setActive(false)}
-      onMouseLeave={() => setActive(false)}
     >
       {GameStateEmojis[gameStatus]}
     </div>

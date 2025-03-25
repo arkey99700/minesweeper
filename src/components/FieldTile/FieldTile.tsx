@@ -1,4 +1,4 @@
-import style from '../../assets/css/app.module.css';
+import style from '../../assets/css/app.module.scss';
 import { MouseEvent, useState } from 'react';
 import { MinefieldTile } from '../../lib/minefield';
 import { flagTile, unflagTile } from '../../store/slices/minefieldSlice';

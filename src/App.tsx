@@ -1,4 +1,4 @@
-import style from './assets/css/app.module.css';
+import style from './assets/css/app.module.scss';
 import PlayerButton from './components/PlayerButton/PlayerButton';
 import Field from './components/Field/Field';
 import Counter from './components/Counter/Counter';
