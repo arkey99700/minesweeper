@@ -30,14 +30,11 @@ export const checkTile = createAppAsyncThunk(
           dispatch(createMinefield(minefieldParameters));
         } while (getState().minefield.grid[y][x].isMined);
 
-        const newTile = getState().minefield.grid[y][x];
-
-        dispatch(revealTile(newTile));
-        dispatch(revealAdjacentTiles(newTile));
-      } else {
-        dispatch(revealTile(tile));
+        tile = getState().minefield.grid[y][x];
       }
 
+      dispatch(revealTile(tile));
+      dispatch(revealAdjacentTiles(tile));
       dispatch(setFirstTileRevealed(true));
       return;
     }
