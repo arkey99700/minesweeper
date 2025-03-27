@@ -22,6 +22,16 @@ export const stopTimer = createAppAsyncThunk(
   }
 );
 
+export const resetTimer = createAppAsyncThunk(
+  'timer/resetTimer',
+  (_, thunkApi) => {
+    clearInterval(thunkApi.getState().timer.timerId);
+
+    thunkApi.dispatch(clearTimer());
+    thunkApi.dispatch(setTimerId(undefined));
+  }
+);
+
 export const restartTimer = createAppAsyncThunk(
   'timer/restartTimer',
   (_, thunkApi) => {

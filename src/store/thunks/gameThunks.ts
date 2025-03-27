@@ -4,8 +4,12 @@ import {
   setSettingsDisplayed,
   setStatus,
 } from '../slices/gameSlice';
-import { createMinefield, MinefieldParameters } from '../slices/minefieldSlice';
-import { restartTimer, startTimer } from './timerThunks';
+import {
+  createMinefield,
+  MinefieldParameters,
+  setFirstTileRevealed,
+} from '../slices/minefieldSlice';
+import { resetTimer } from './timerThunks';
 import {
   DEFAULT_MINEFIELD_WIDTH,
   DEFAULT_MINEFIELD_HEIGHT,
@@ -23,7 +27,6 @@ export const startGame = createAppAsyncThunk(
     dispatch(setSettingsDisplayed(false));
     dispatch(setStatus(GameStatuses.InProgress));
     dispatch(createMinefield(options));
-    dispatch(startTimer());
   }
 );
 
@@ -31,6 +34,8 @@ export const restartGame = createAppAsyncThunk(
   'game/restart',
   (_, thunkApi) => {
     const { dispatch } = thunkApi;
+
+    dispatch(setFirstTileRevealed(false));
 
     let minefieldParameters: string | MinefieldParameters = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_OPTIONS_KEY) || ''
@@ -53,6 +58,6 @@ export const restartGame = createAppAsyncThunk(
 
     dispatch(setStatus(GameStatuses.InProgress));
     dispatch(createMinefield(minefieldParameters));
-    dispatch(restartTimer());
+    dispatch(resetTimer());
   }
 );

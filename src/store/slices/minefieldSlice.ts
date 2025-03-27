@@ -20,6 +20,7 @@ export type MinefieldParameters = {
 export type MinefieldState = MinefieldParameters & {
   flagCount: number;
   grid: MinefieldGrid;
+  firstTileRevealed: boolean;
 };
 
 const initialState: MinefieldState = {
@@ -28,6 +29,7 @@ const initialState: MinefieldState = {
   mineCount: 0,
   flagCount: 0,
   grid: createEmptyGrid(DEFAULT_MINEFIELD_WIDTH, DEFAULT_MINEFIELD_HEIGHT),
+  firstTileRevealed: false,
 };
 
 const minefieldSlice = createSlice({
@@ -36,6 +38,9 @@ const minefieldSlice = createSlice({
   reducers: {
     revealTile: (state, action: PayloadAction<MinefieldTile>) => {
       state.grid[action.payload.y][action.payload.x].isRevealed = true;
+    },
+    setFirstTileRevealed: (state, action: PayloadAction<boolean>) => {
+      state.firstTileRevealed = action.payload;
     },
     revealAdjacentTiles: (state, action: PayloadAction<MinefieldTile>) => {
       state.grid = revealAdjacentTilesRecursive(
@@ -89,6 +94,7 @@ export const {
   flagTile,
   unflagTile,
   revealTile,
+  setFirstTileRevealed,
   revealAdjacentTiles,
   flagMinedTiles,
   createMinefield,

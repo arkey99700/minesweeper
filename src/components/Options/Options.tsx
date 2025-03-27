@@ -60,7 +60,9 @@ export default function Options() {
   const widthInputRef = useRef<HTMLInputElement>(null);
   const minesInputRef = useRef<HTMLInputElement>(null);
 
-  const [maxMineCount, setMaxMineCount] = useState(DEFAULT_MINE_COUNT);
+  const [maxMineCount, setMaxMineCount] = useState(
+    (DEFAULT_MINEFIELD_HEIGHT - 1) * (DEFAULT_MINEFIELD_WIDTH - 1)
+  );
   const [selectedDifficulty, setSelectedDifficulty] =
     useState<Difficulty>(DIFFICULTY_EASY);
 
@@ -100,7 +102,7 @@ export default function Options() {
   return (
     <form className={`${style.options}`} ref={formRef}>
       <div className={`${style.option}`}>
-        <span>Уровень сложности</span>
+        <b>Уровень сложности</b>
         <ul className={`${style.list}`}>
           {Object.entries(difficultyPresets).map(([difficulty, parameters]) => (
             <li key={difficulty}>
@@ -116,8 +118,12 @@ export default function Options() {
                   checked={selectedDifficulty === difficulty}
                 />
                 <span
-                  className={`${style.hinted}`}
-                  title={`Поле ${parameters.width}×${parameters.height} и ${parameters.mineCount} мин`}
+                  className={`${difficulty !== DIFFICULTY_CUSTOM && style.hinted}`}
+                  title={
+                    difficulty !== DIFFICULTY_CUSTOM
+                      ? `Поле ${parameters.width}×${parameters.height} и ${parameters.mineCount} мин`
+                      : undefined
+                  }
                 >
                   {parameters.name}
                 </span>

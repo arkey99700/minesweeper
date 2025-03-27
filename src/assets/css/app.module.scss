@@ -2,6 +2,7 @@
 
 html {
   height: 100vh;
+  font-family: 'Source Code Pro', monospace;
 }
 
 body {
@@ -122,8 +123,10 @@ $tileSize: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  background-color: #dddddd;
   border: 3px outset #ffffff;
+  font-family: inherit;
+  cursor: pointer;
   user-select: none;
 
   &:hover,
@@ -133,14 +136,15 @@ $tileSize: 30px;
 
   &:active {
     border: 3px inset #ffffff;
+    background-color: #eeeeee;
   }
-}
 
-.button--smile {
-  width: 44px;
-  height: 44px;
-  font-size: 26px;
-  line-height: 1rem;
+  &--smile {
+    width: 44px;
+    height: 44px;
+    font-size: 26px;
+    line-height: 1rem;
+  }
 }
 
 .counter {
