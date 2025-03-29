@@ -25,7 +25,7 @@ function App() {
           <Field minefield={grid}></Field>
         </div>
       </div>
-      <Modal open={settingsDispayed}>
+      <Modal isOpen={settingsDispayed}>
         <Options></Options>
       </Modal>
     </>

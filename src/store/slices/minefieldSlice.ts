@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
-  MinefieldTile,
   MinefieldGrid,
   createMinefieldGrid,
   revealAdjacentTilesRecursive,
   createEmptyGrid,
+  MinefieldTileCoordinates,
 } from '../../lib/minefield';
 import {
   DEFAULT_MINEFIELD_HEIGHT,
@@ -36,13 +36,16 @@ const minefieldSlice = createSlice({
   name: 'minefield',
   initialState,
   reducers: {
-    revealTile: (state, action: PayloadAction<MinefieldTile>) => {
+    revealTile: (state, action: PayloadAction<MinefieldTileCoordinates>) => {
       state.grid[action.payload.y][action.payload.x].isRevealed = true;
     },
     setFirstTileRevealed: (state, action: PayloadAction<boolean>) => {
       state.firstTileRevealed = action.payload;
     },
-    revealAdjacentTiles: (state, action: PayloadAction<MinefieldTile>) => {
+    revealAdjacentTiles: (
+      state,
+      action: PayloadAction<MinefieldTileCoordinates>
+    ) => {
       state.grid = revealAdjacentTilesRecursive(
         state.grid,
         action.payload.x,
@@ -58,13 +61,13 @@ const minefieldSlice = createSlice({
         }
       }
     },
-    flagTile: (state, action: PayloadAction<MinefieldTile>) => {
+    flagTile: (state, action: PayloadAction<MinefieldTileCoordinates>) => {
       if (state.flagCount - 1 >= 0) {
         state.flagCount--;
         state.grid[action.payload.y][action.payload.x].isFlagged = true;
       }
     },
-    unflagTile: (state, action: PayloadAction<MinefieldTile>) => {
+    unflagTile: (state, action: PayloadAction<MinefieldTileCoordinates>) => {
       state.flagCount++;
       state.grid[action.payload.y][action.payload.x].isFlagged = false;
     },

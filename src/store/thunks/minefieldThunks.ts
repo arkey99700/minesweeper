@@ -1,4 +1,4 @@
-import { MinefieldTile, isGameWon } from '../../lib/minefield';
+import { MinefieldTileCoordinates, isGameWon } from '../../lib/minefield';
 import { createAppAsyncThunk } from '../store';
 import {
   flagMinedTiles,
@@ -15,8 +15,9 @@ import { getStorageValue } from '../../lib/storage';
 
 export const checkTile = createAppAsyncThunk(
   'minefield/checkTile',
-  (tile: MinefieldTile, thunkApi) => {
+  (coordinates: MinefieldTileCoordinates, thunkApi) => {
     const { dispatch, getState } = thunkApi;
+    let tile = getState().minefield.grid[coordinates.y][coordinates.x];
 
     if (!getState().minefield.firstTileRevealed) {
       if (tile.isMined) {
@@ -31,13 +32,13 @@ export const checkTile = createAppAsyncThunk(
         tile = getState().minefield.grid[y][x];
       }
 
-      dispatch(revealTile(tile));
-      dispatch(revealAdjacentTiles(tile));
+      dispatch(revealTile({ x: tile.x, y: tile.y }));
+      dispatch(revealAdjacentTiles({ x: tile.x, y: tile.y }));
       dispatch(setFirstTileRevealed(true));
       return;
     }
 
-    dispatch(revealTile(tile));
+    dispatch(revealTile({ x: tile.x, y: tile.y }));
 
     if (tile.isMined) {
       dispatch(revealMinedTiles());
@@ -46,7 +47,7 @@ export const checkTile = createAppAsyncThunk(
       return;
     }
 
-    dispatch(revealAdjacentTiles(tile));
+    dispatch(revealAdjacentTiles({ x: tile.x, y: tile.y }));
 
     const { grid, mineCount } = getState().minefield;
 

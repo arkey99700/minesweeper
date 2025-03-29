@@ -16,6 +16,9 @@ const appReducer = combineReducers({
 
 const store = configureStore({
   reducer: appReducer,
+  devTools: {
+    actionsDenylist: 'timer/incrementTimer',
+  },
 });
 
 export type AppState = ReturnType<typeof store.getState>;

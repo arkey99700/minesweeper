@@ -1,11 +1,14 @@
+export type MinefieldTileCoordinates = {
+  x: number;
+  y: number;
+};
+
 export type MinefieldTile = {
   isRevealed: boolean;
   isMined: boolean;
   isFlagged: boolean;
   number: number;
-  x: number;
-  y: number;
-};
+} & MinefieldTileCoordinates;
 
 export type MinefieldGrid = MinefieldTile[][];
 

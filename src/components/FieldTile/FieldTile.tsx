@@ -1,34 +1,37 @@
 import style from '../../assets/css/app.module.scss';
 import { memo, MouseEvent, useState } from 'react';
-import { MinefieldTile } from '../../lib/minefield';
 import { flagTile, unflagTile } from '../../store/slices/minefieldSlice';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppStore } from '../../store/store';
 import { GameStatuses, setStatus } from '../../store/slices/gameSlice';
 import { checkTile } from '../../store/thunks/minefieldThunks';
 import { startTimer } from '../../store/thunks/timerThunks';
 
 type Props = {
-  tile: MinefieldTile;
+  isRevealed: boolean;
+  isMined: boolean;
+  isFlagged: boolean;
+  number: number;
+  x: number;
+  y: number;
 };
 
-function FieldTile({ tile }: Props) {
+function FieldTile({ isRevealed, isMined, isFlagged, number, x, y }: Props) {
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector((state) => state.game);
-  const { timerId } = useAppSelector((state) => state.timer);
+  const store = useAppStore();
 
   function handleMouseDown(event: MouseEvent) {
-    if (tile.isRevealed || status === GameStatuses.Lost) {
+    if (isRevealed || store.getState().game.status === GameStatuses.Lost) {
       return;
     }
 
     if (event.button === 2) {
-      if (tile.isFlagged) {
-        dispatch(unflagTile(tile));
+      if (isFlagged) {
+        dispatch(unflagTile({ x, y }));
       } else {
-        dispatch(flagTile(tile));
+        dispatch(flagTile({ x, y }));
       }
     } else {
-      if (tile.isFlagged) {
+      if (isFlagged) {
         return;
       }
 
@@ -38,11 +41,13 @@ function FieldTile({ tile }: Props) {
   }
 
   function handleMouseUp(event: MouseEvent) {
+    const status = store.getState().game.status;
+
     if (status === GameStatuses.Lost) {
       return;
     }
 
-    if (tile.isRevealed) {
+    if (isRevealed) {
       if (status === GameStatuses.PendingReveal) {
         dispatch(setStatus(GameStatuses.InProgress));
       }
@@ -50,20 +55,18 @@ function FieldTile({ tile }: Props) {
       return;
     }
 
-    if (!timerId) {
-      dispatch(startTimer());
-    }
+    dispatch(startTimer());
 
     if (event.button === 0) {
-      if (tile.isFlagged) {
+      if (isFlagged) {
         return;
       }
 
       setActive(false);
       dispatch(setStatus(GameStatuses.InProgress));
 
-      if (!tile.isRevealed) {
-        dispatch(checkTile(tile));
+      if (!isRevealed) {
+        dispatch(checkTile({ x, y }));
       }
     }
   }
@@ -79,7 +82,7 @@ function FieldTile({ tile }: Props) {
       setActive(false);
 
       if (
-        status === GameStatuses.PendingReveal &&
+        store.getState().game.status === GameStatuses.PendingReveal &&
         (!event.relatedTarget ||
           !(event.relatedTarget as HTMLElement).closest(`.${style.tile}`))
       ) {
@@ -88,20 +91,20 @@ function FieldTile({ tile }: Props) {
     }
   }
 
-  function getTileContent(tile: MinefieldTile): string | number {
-    if (tile.isMined && tile.isRevealed) {
+  function getTileContent(): string | number {
+    if (isMined && isRevealed) {
       return '💣';
     }
 
-    if (tile.isFlagged && !tile.isRevealed) {
+    if (isFlagged && !isRevealed) {
       return '🚩';
     }
 
-    if (!tile.isRevealed) {
+    if (!isRevealed) {
       return '';
     }
 
-    return tile.number || '';
+    return number || '';
   }
 
   const [active, setActive] = useState(false);
@@ -109,9 +112,9 @@ function FieldTile({ tile }: Props) {
   return (
     <div
       className={`
-      ${tile.isRevealed ? style.borderInsetSmall : style.borderOutsetSmall} 
-      ${tile.isRevealed ? style.lightGrey : style.grey} 
-      ${tile.number && !tile.isMined ? style['tile--' + tile.number] : ''} 
+      ${isRevealed ? style.borderInsetSmall : style.borderOutsetSmall} 
+      ${isRevealed ? style.lightGrey : style.grey} 
+      ${number && !isMined ? style['tile--' + number] : ''} 
       ${style.tile} ${style.greyHover} 
       ${
         active
@@ -126,7 +129,7 @@ function FieldTile({ tile }: Props) {
         event.preventDefault()
       }
     >
-      {getTileContent(tile)}
+      {getTileContent()}
     </div>
   );
 }
