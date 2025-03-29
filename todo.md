@@ -10,7 +10,7 @@
 
 - Add scoreboard working via LS
 - Add ability to generate minefield of random width and height
-- Add sidebar with settings and scoreboard buttonss
+- Add sidebar with settings and scoreboard buttons
 
 # v1.3
 

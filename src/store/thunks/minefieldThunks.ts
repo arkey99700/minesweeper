@@ -10,8 +10,8 @@ import {
 } from '../slices/minefieldSlice';
 import { GameStatuses, setStatus } from '../slices/gameSlice';
 import { stopTimer } from './timerThunks';
-import { LOCAL_STORAGE_OPTIONS_KEY } from '../../lib/constants';
-import { getLocalStorageValue } from '../../lib/localstorage';
+import { STORAGE_OPTIONS_KEY } from '../../lib/constants';
+import { getStorageValue } from '../../lib/storage';
 
 export const checkTile = createAppAsyncThunk(
   'minefield/checkTile',
@@ -20,9 +20,7 @@ export const checkTile = createAppAsyncThunk(
 
     if (!getState().minefield.firstTileRevealed) {
       if (tile.isMined) {
-        const minefieldParameters = getLocalStorageValue(
-          LOCAL_STORAGE_OPTIONS_KEY
-        );
+        const minefieldParameters = getStorageValue(STORAGE_OPTIONS_KEY);
 
         const { x, y } = tile;
 

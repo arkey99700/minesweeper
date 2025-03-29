@@ -1,5 +1,5 @@
 import style from '../../assets/css/app.module.scss';
-import { MouseEvent, useState } from 'react';
+import { memo, MouseEvent, useState } from 'react';
 import { MinefieldTile } from '../../lib/minefield';
 import { flagTile, unflagTile } from '../../store/slices/minefieldSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
@@ -11,7 +11,7 @@ type Props = {
   tile: MinefieldTile;
 };
 
-export default function FieldTile({ tile }: Props) {
+function FieldTile({ tile }: Props) {
   const dispatch = useAppDispatch();
   const { status } = useAppSelector((state) => state.game);
   const { timerId } = useAppSelector((state) => state.timer);
@@ -122,11 +122,13 @@ export default function FieldTile({ tile }: Props) {
       onMouseUp={handleMouseUp}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
-      onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
-        e.preventDefault()
+      onContextMenu={(event: React.MouseEvent<HTMLDivElement>) =>
+        event.preventDefault()
       }
     >
       {getTileContent(tile)}
     </div>
   );
 }
+
+export default memo(FieldTile);

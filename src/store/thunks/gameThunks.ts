@@ -10,15 +10,15 @@ import {
   setFirstTileRevealed,
 } from '../slices/minefieldSlice';
 import { resetTimer } from './timerThunks';
-import { LOCAL_STORAGE_OPTIONS_KEY } from '../../lib/constants';
-import { getLocalStorageValue } from '../../lib/localstorage';
+import { STORAGE_OPTIONS_KEY } from '../../lib/constants';
+import { getStorageValue, setStorageValue } from '../../lib/storage';
 
 export const startGame = createAppAsyncThunk(
   'game/start',
   (options: MinefieldParameters, thunkApi) => {
     const { dispatch } = thunkApi;
 
-    localStorage.setItem(LOCAL_STORAGE_OPTIONS_KEY, JSON.stringify(options));
+    setStorageValue(STORAGE_OPTIONS_KEY, JSON.stringify(options));
 
     dispatch(setSettingsDisplayed(false));
     dispatch(setStatus(GameStatuses.InProgress));
@@ -33,7 +33,7 @@ export const restartGame = createAppAsyncThunk(
 
     dispatch(setFirstTileRevealed(false));
 
-    const minefieldParameters = getLocalStorageValue(LOCAL_STORAGE_OPTIONS_KEY);
+    const minefieldParameters = getStorageValue(STORAGE_OPTIONS_KEY);
 
     dispatch(setStatus(GameStatuses.InProgress));
     dispatch(createMinefield(minefieldParameters));

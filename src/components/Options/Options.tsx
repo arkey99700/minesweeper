@@ -13,6 +13,7 @@ import {
   MAX_MINEFIELD_HEIGHT,
   MAX_MINEFIELD_WIDTH,
   MIN_MINE_COUNT,
+  MAX_MINE_COUNT,
 } from '../../lib/constants';
 import { MinefieldParameters } from '../../store/slices/minefieldSlice';
 
@@ -71,7 +72,9 @@ export default function Options() {
       (Number(heightInputRef.current?.value) - 1) *
       (Number(widthInputRef.current?.value) - 1);
 
-    setMaxMineCount(Math.max(maxMineCount, MIN_MINE_COUNT));
+    setMaxMineCount(
+      Math.max(Math.min(maxMineCount, MAX_MINE_COUNT), MIN_MINE_COUNT)
+    );
   }
 
   function startGame() {

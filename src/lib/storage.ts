@@ -3,20 +3,21 @@ import {
   DEFAULT_MINE_COUNT,
   DEFAULT_MINEFIELD_HEIGHT,
   DEFAULT_MINEFIELD_WIDTH,
-  LOCAL_STORAGE_OPTIONS_KEY,
+  STORAGE_OPTIONS_KEY,
 } from './constants';
 
-type LocalStorageMap = {
-  [LOCAL_STORAGE_OPTIONS_KEY]: MinefieldParameters;
+type StorageKeyValueMap = {
+  [STORAGE_OPTIONS_KEY]: MinefieldParameters;
 };
 
-export function getLocalStorageValue<T extends keyof LocalStorageMap>(
-  key: T
-): LocalStorageMap[T] {
-  let value: LocalStorageMap[T] = JSON.parse(localStorage.getItem(key) || '');
+export function getStorageValue<T extends keyof StorageKeyValueMap>(
+  key: T,
+  storage: Storage = sessionStorage
+): StorageKeyValueMap[T] {
+  let value: StorageKeyValueMap[T] = JSON.parse(storage.getItem(key) || '');
 
   switch (key) {
-    case LOCAL_STORAGE_OPTIONS_KEY:
+    case STORAGE_OPTIONS_KEY:
       if (typeof value !== 'object' || value === null) {
         value = {
           width: DEFAULT_MINEFIELD_WIDTH,
@@ -32,4 +33,12 @@ export function getLocalStorageValue<T extends keyof LocalStorageMap>(
   }
 
   return value;
+}
+
+export function setStorageValue<T extends keyof StorageKeyValueMap>(
+  key: T,
+  value: string,
+  storage: Storage = sessionStorage
+): void {
+  storage.setItem(key, value);
 }
